@@ -1,0 +1,128 @@
+/* Temporary modular styles for index.html (previously will_you_be_my_girlfriend.html) */
+:root { --overlay: rgba(255,192,203,0.55); }
+* { box-sizing: border-box; }
+html, body { 
+  height: 100%; 
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  font-family: 'Fredoka', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-image: url('img/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #111;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* translucent overlay to improve contrast */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Put primary content above overlay */
+.main-container { 
+  position: relative; 
+  z-index: 1; 
+  max-width: 90vw;
+  width: 100%;
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#optionsSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+h1, h2, p {
+  width: 100%;
+}
+
+/* Ensure buttons are large enough for touch */
+.btn { min-width: 120px; touch-action: manipulation; }
+
+/* Image button styling */
+.button-img {
+  transition: transform 0.2s ease, filter 0.2s ease;
+  display: inline-block;
+}
+.button-img:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+.button-img:active {
+  transform: scale(0.95);
+}
+
+.cute-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #4b2a6a;
+  background: linear-gradient(135deg, #f8d7ff 0%, #d8f4ff 100%);
+  border: 2px solid rgba(92, 63, 146, 0.2);
+  border-radius: 999px;
+  box-shadow: 0 12px 24px rgba(111, 66, 193, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.cute-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(111, 66, 193, 0.18);
+  background: linear-gradient(135deg, #ffe3f9 0%, #c9ecff 100%);
+}
+.cute-next:active {
+  transform: scale(0.98);
+}
+.cute-next:focus-visible {
+  outline: 3px solid rgba(92, 63, 146, 0.35);
+  outline-offset: 4px;
+}
+
+/* Music control */
+#backgroundMusic { position: fixed; bottom: 12px; right: 12px; z-index: 2; }
+
+/* Responsive tweaks for iPad and iPhone */
+@media (max-width: 768px) {
+  .main-container { 
+    padding: 1.5rem 1rem;
+    max-width: 95vw;
+  }
+  h1 { font-size: 1.5rem; }
+  #optionsSection {
+    gap: 2rem;
+  }
+}
+@media (max-width: 480px) {
+  h1 { font-size: 1.2rem; }
+  #optionsSection {
+    gap: 1.5rem;
+  }
+  .button-img {
+    max-width: 120px !important;
+  }
+}

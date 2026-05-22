@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Letter</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnE2J5Y6GmYl5G1G6Jjv3gk5v9vNQ5K" crossorigin="anonymous">
+  <!-- Google Fonts - Fredoka (Cute) -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Modular styles -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .letter-box {
+      background: rgba(255,255,255,0.95);
+      padding: 3rem 2rem;
+      border-radius: 8px;
+      max-width: 500px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    .letter-box h2 {
+      color: #d63384;
+      margin-bottom: 1.5rem;
+    }
+    .letter-box p {
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .letter-box p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex align-items-center justify-content-center" style="min-height: 100vh; width: 100%; position: relative;">
+    <div class="main-container">
+      <div class="envelope-container">
+        <div class="envelope" id="envelope">
+          <div class="flap"></div>
+          <div class="body">
+            <div class="letter" id="letter">
+              <h2>Dear my Love,</h2>
+              <p>Thank you my Love for all the Gifts you have given me. all the time you spent with me. all the love youhave given me. I want to tell you how much I appreciate being part of such an important part of my Life.</p>
+              <p>I Pray to God on how much I want to be with you. I Thank God eveeyday that he gave me the opertunity to be with such a wonderful person like you my Love. Thanky you so mcuh For choosing me Langga.</p>
+              <p>With all My Love,</p>
+              <p>I will forever be yours.   ❤️</p>
+            </div>
+          </div>
+        </div>
+      </br><br>
+        <button class="btn cute-next btn-lg mt-4" onclick="window.location.href='flower.html'">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="backgroundMusic">
+    <audio id="music" src="sound/cute_bg.mp3" autoplay loop></audio>
+  </div>
+  <script>
+    const music = document.getElementById('music');
+    const envelope = document.getElementById('envelope');
+    const letter = document.getElementById('letter');
+    window.addEventListener('DOMContentLoaded', () => {
+      if (music) {
+        music.volume = 0.35;
+        music.play().catch(() => {});
+      }
+      // animate envelope opening shortly after load
+      if (envelope) {
+        setTimeout(() => {
+          envelope.classList.add('open');
+        }, 700);
+      }
+    });
+  </script>
+  <style>
+    .envelope-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .envelope {
+      width: 520px;
+      max-width: 92vw;
+      perspective: 1000px;
+    }
+    .envelope .body {
+      position: relative;
+      background: linear-gradient(180deg,#fffefc,#fff);
+      border-radius: 8px;
+      padding: 2.2rem 2rem 1.8rem 2rem;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+    .envelope .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 55%;
+      background: linear-gradient(135deg,#f2dede,#f7ecec);
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transition: transform 900ms cubic-bezier(.2,.9,.2,1);
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      backface-visibility: hidden;
+      z-index: 4;
+    }
+    .envelope .letter {
+      background: #fff;
+      border-radius: 6px;
+      padding: 1.2rem 1.2rem;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+      transform: translateY(30px) scale(0.98);
+      transition: transform 900ms cubic-bezier(.2,.9,.2,1), opacity 600ms;
+      opacity: 0;
+      position: relative;
+      z-index: 2;
+    }
+    .envelope.open .flap {
+      transform: rotateX(-180deg);
+    }
+    .envelope.open .letter {
+      transform: translateY(-6px) scale(1);
+      opacity: 1;
+    }
+    .envelope .letter h2 { color: #d63384; margin-bottom: 0.8rem; }
+    .envelope .letter p { color: #333; margin-bottom: 0.7rem; line-height: 1.6; }
+    @media (max-width: 480px) {
+      .envelope { width: 92vw; }
+      .envelope .flap { height: 60%; }
+      .envelope .body { padding: 1.2rem; }
+      .envelope .letter { padding: 0.9rem; }
+    }
+  </style>
+</body>
+</html>
