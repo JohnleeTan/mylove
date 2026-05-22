@@ -4,135 +4,137 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Ask a Girl to be Your Girlfriend</title>
-  <!-- Bootstrap CSS (CDN) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnE2J5Y6GmYl5G1G6Jjv3gk5v9vNQ5K" crossorigin="anonymous">
-  <!-- Google Fonts - Fredoka (Cute) -->
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Modular styles -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="d-flex align-items-center justify-content-center" style="min-height: 100vh; width: 100%; position: relative;">
     <div class="main-container">
-      <h1 class="mb-5" style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 3.2rem; color: #5D3A1A;">Mayriel Antipuesto, will you be my girlfriend? 💕</h1>
-      <img id="faceImage" src="img/worried.png" alt="Question Mark" class="mb-4" style="max-width: 200px; width: 100%;">
-      <div id="optionsSection">
-        <div class="d-flex justify-content-center gap-5">
-          <img id="noButton" src="img/no.png" alt="No" class="button-img" style="cursor: pointer; max-width: 150px;">
-          <img id="yesButton" src="img/yes.png" alt="Yes" class="button-img" style="cursor: pointer; max-width: 150px;">
-        </div>
+
+      <h1 class="mb-5" style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 3.2rem; color: #5D3A1A;">
+        Mayriel Antipuesto, will you be my girlfriend? 💕
+      </h1>
+
+      <img id="faceImage" src="img/worried.png" class="mb-4" style="max-width: 200px; width: 100%;">
+
+      <div class="d-flex justify-content-center gap-5">
+        <img id="noButton" src="img/no.png" style="cursor: pointer; max-width: 150px;">
+        <img id="yesButton" src="img/yes.png" style="cursor: pointer; max-width: 150px;">
       </div>
 
-      <!-- play button removed: music will attempt to autoplay on page load -->
-
-      <div id="backgroundMusic">
-        <audio id="music" src="sound/cute_bg.mp3" autoplay loop></audio>
+      <div>
+        <audio id="music" src="sound/cute_bg.mp3" loop autoplay muted></audio>
         <audio id="noSound" src="sound/no_sound.mp3" preload="auto"></audio>
         <audio id="yesSound" src="sound/yes_sound.mp3" preload="auto"></audio>
       </div>
-  
-  <script>
-    const faceImage = document.getElementById('faceImage');
-    const noButton = document.getElementById('noButton');
-    const yesButton = document.getElementById('yesButton');
-    const music = document.getElementById('music');
-    const noSound = document.getElementById('noSound');
-    const yesSound = document.getElementById('yesSound');
-    let noClickCount = 0;
-    let musicStarted = false;
 
-    window.addEventListener('DOMContentLoaded', () => {
-      if (music) {
-        music.volume = 0.35;
-        const playPromise = music.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            musicStarted = true;
-          }).catch(() => {
-            console.log('Autoplay prevented by browser policy');
-          });
-        }
-      }
-    });
+    </div>
+  </div>
 
-    noButton.addEventListener('click', () => {
-      playSound(noSound);
-      attemptPlayMusic();
-      if (music) {
-        music.volume = Math.max(0.02, music.volume - 0.02);
-      }
-      noClickCount++;
-      console.log('No button clicked:', noClickCount);
-      if (noClickCount < 3) {
-        moveButtonToRandomLocation(noButton);
-      } else if (noClickCount === 3) {
-        faceImage.src = 'img/angry.png';
-        noButton.style.display = 'none';
-        playMusic();
-      }
-    });
+<script>
+const faceImage = document.getElementById('faceImage');
+const noButton = document.getElementById('noButton');
+const yesButton = document.getElementById('yesButton');
 
-    yesButton.addEventListener('click', () => {
-      faceImage.src = 'img/hearts.png';
-      if (yesSound) {
-        yesSound.pause();
-        yesSound.currentTime = 0;
-        yesSound.play().catch(() => {
-          window.location.href = 'photos.html';
-        });
-        yesSound.onended = () => {
-          window.location.href = 'photos.html';
-        };
-      } else {
-        window.location.href = 'photos.html';
-      }
-    });
+const music = document.getElementById('music');
+const noSound = document.getElementById('noSound');
+const yesSound = document.getElementById('yesSound');
 
-    function moveButtonToRandomLocation(button) {
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      const buttonWidth = 150;
-      const buttonHeight = 150;
-      
-      const randomX = Math.random() * (viewportWidth - buttonWidth);
-      const randomY = Math.random() * (viewportHeight - buttonHeight);
-      
-      button.style.position = 'fixed';
-      button.style.left = randomX + 'px';
-      button.style.top = randomY + 'px';
-      button.style.zIndex = '10';
-    }
+let noClickCount = 0;
+let musicStarted = false;
 
-function attemptPlayMusic() {
+/* =========================
+   MUSIC AUTO START FIX
+========================= */
+function startMusic() {
   if (!music || musicStarted) return;
+
+  music.volume = 0.35;
+  music.muted = false;
+
   const playPromise = music.play();
+
   if (playPromise !== undefined) {
-    playPromise.then(() => {
-      musicStarted = true;
-    }).catch(() => {
-      console.log('play() was prevented');
-    });
+    playPromise
+      .then(() => {
+        musicStarted = true;
+      })
+      .catch(() => {
+        console.log("Autoplay blocked — waiting for interaction");
+      });
   }
 }
 
-// Call the attemptPlayMusic function when the page is loaded
+/* Try autoplay on load */
 window.addEventListener('DOMContentLoaded', () => {
-  attemptPlayMusic();
+  startMusic();
 });
 
-    // play button/prompt removed — autoplay attempted on load
+/* Fallback: unlock on ANY click */
+document.addEventListener('click', () => {
+  startMusic();
+}, { once: true });
 
-    function playMusic() {
-      if (music && music.play) music.play().catch(() => {});
-    }
+/* =========================
+   BUTTON LOGIC
+========================= */
 
-    function playSound(sound) {
-      if (sound) {
-        sound.pause();
-        sound.currentTime = 0;
-        if (sound.play) sound.play().catch(() => {});
-      }
-    }
-  </script>
+noButton.addEventListener('click', () => {
+  playSound(noSound);
+
+  if (music) {
+    music.volume = Math.max(0.02, music.volume - 0.02);
+  }
+
+  noClickCount++;
+
+  if (noClickCount < 3) {
+    moveButtonToRandomLocation(noButton);
+  } else {
+    faceImage.src = 'img/angry.png';
+    noButton.style.display = 'none';
+  }
+});
+
+yesButton.addEventListener('click', () => {
+  faceImage.src = 'img/hearts.png';
+
+  yesSound.currentTime = 0;
+  yesSound.play().catch(() => {
+    window.location.href = 'photos.html';
+  });
+
+  yesSound.onended = () => {
+    window.location.href = 'photos.html';
+  };
+});
+
+/* =========================
+   UTILITIES
+========================= */
+
+function moveButtonToRandomLocation(button) {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  const x = Math.random() * (w - 150);
+  const y = Math.random() * (h - 150);
+
+  button.style.position = 'fixed';
+  button.style.left = x + 'px';
+  button.style.top = y + 'px';
+  button.style.zIndex = '10';
+}
+
+function playSound(sound) {
+  if (!sound) return;
+  sound.currentTime = 0;
+  sound.play().catch(() => {});
+}
+</script>
+
 </body>
 </html>
