@@ -121,7 +121,7 @@
         
         <div class="flowers-message">
           <h2>A Bouquet of Lilies for My Love</h2>
-          <p>Lilies is such a beautiful flower and so are roses so I decided to get you both because tou deserve even more.</p>
+          <p>Lilies is such a beautiful flower and so are roses so I decided to get you both because you deserve even more.</p>
           <p style="margin-top: 1rem;">Thank you for Accepting my Love May. 💕</p>
         </div>
         
@@ -137,42 +137,72 @@
   <div id="backgroundMusic">
     <audio id="music" src="sound/cute_bg.mp3" autoplay loop></audio>
   </div>
-  <script>
-    const music = document.getElementById('music');
-    window.addEventListener('DOMContentLoaded', () => {
-      if (music) {
-        music.volume = 0.35;
-        music.play().catch(() => {});
-      }
-    });
-    // intermittently animate flower images
-    (function() {
-      const imgs = document.querySelectorAll('.flower-gallery img');
-      if (!imgs || imgs.length === 0) return;
+<script>
+const music = document.getElementById('music');
+let musicStarted = false;
 
-      function triggerRandomFloat() {
-        const i = Math.floor(Math.random() * imgs.length);
-        const img = imgs[i];
-        if (!img) return;
-        img.classList.add('float');
-        // remove after animation completes (randomize slightly)
-        const duration = 3000 + Math.floor(Math.random() * 2500);
-        setTimeout(() => { img.classList.remove('float'); }, duration);
-      }
+/* =========================
+   MUSIC SYSTEM FIX
+========================= */
+function startMusic() {
+  if (!music || musicStarted) return;
 
-      function scheduleNext() {
-        const delay = 2000 + Math.floor(Math.random() * 5000); // 2s-7s
-        setTimeout(() => {
-          // 70% chance to animate on each tick
-          if (Math.random() < 0.7) triggerRandomFloat();
-          scheduleNext();
-        }, delay);
-      }
+  music.volume = 0.35;
 
-      document.addEventListener('DOMContentLoaded', scheduleNext);
-      // also start shortly after load
-      setTimeout(scheduleNext, 1500);
-    })();
-  </script>
+  const playPromise = music.play();
+
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        musicStarted = true;
+      })
+      .catch(() => {
+        console.log("Autoplay blocked — waiting for interaction");
+      });
+  }
+}
+
+/* Try autoplay on load */
+window.addEventListener('DOMContentLoaded', () => {
+  startMusic();
+});
+
+/* Fallback: unlock on first interaction */
+document.addEventListener('click', () => startMusic(), { once: true });
+document.addEventListener('touchstart', () => startMusic(), { once: true });
+
+/* =========================
+   FLOWER FLOAT ANIMATION
+   (your original, cleaned slightly)
+========================= */
+(function() {
+  const imgs = document.querySelectorAll('.flower-gallery img');
+  if (!imgs || imgs.length === 0) return;
+
+  function triggerRandomFloat() {
+    const i = Math.floor(Math.random() * imgs.length);
+    const img = imgs[i];
+    if (!img) return;
+
+    img.classList.add('float');
+
+    const duration = 3000 + Math.floor(Math.random() * 2500);
+    setTimeout(() => {
+      img.classList.remove('float');
+    }, duration);
+  }
+
+  function scheduleNext() {
+    const delay = 2000 + Math.floor(Math.random() * 5000);
+
+    setTimeout(() => {
+      if (Math.random() < 0.7) triggerRandomFloat();
+      scheduleNext();
+    }, delay);
+  }
+
+  setTimeout(scheduleNext, 1200);
+})();
+</script>
 </body>
 </html>
