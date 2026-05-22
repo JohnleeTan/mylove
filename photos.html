@@ -97,47 +97,78 @@
           <p>Here are some photos we took together my love, every time I see these photos it just makes me miss you so  much Langga. 💕</p>
         </div>
       </div>
-      
+    </br>
       <button class="btn cute-next btn-lg mt-5" onclick="window.location.href='letter.html'">Next</button>
     </div>
   </div>
 
   <div id="backgroundMusic">
-    <audio id="music" src="sound/cute_bg.mp3" autoplay loop></audio>
-  </div>
-  <script>
-    const music = document.getElementById('music');
-    window.addEventListener('DOMContentLoaded', () => {
-      if (music) {
-        music.volume = 0.35;
-        music.play().catch(() => {});
-      }
-    });
+  <audio id="music" src="sound/cute_bg.mp3" loop></audio>
+</div>
+ <script>
+const music = document.getElementById('music');
+let musicStarted = false;
 
-    // occasional gentle float for photos
-    (function() {
-      const photos = document.querySelectorAll('.photo-collage img');
-      if (!photos || photos.length === 0) return;
+/* =========================
+   MUSIC START SYSTEM
+========================= */
+function startMusic() {
+  if (!music || musicStarted) return;
 
-      function triggerFloat() {
-        const idx = Math.floor(Math.random() * photos.length);
-        const el = photos[idx];
-        if (!el) return;
-        el.classList.add('float');
-        const animDuration = 3600 + Math.floor(Math.random() * 2400);
-        setTimeout(() => el.classList.remove('float'), animDuration);
-      }
+  music.volume = 0.35;
 
-      function schedule() {
-        const delay = 2500 + Math.floor(Math.random() * 6000); // 2.5s - 8.5s
-        setTimeout(() => {
-          if (Math.random() < 0.75) triggerFloat();
-          schedule();
-        }, delay);
-      }
+  const playPromise = music.play();
 
-      setTimeout(schedule, 1200);
-    })();
-  </script>
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        musicStarted = true;
+      })
+      .catch(() => {
+        console.log("Autoplay blocked — waiting for interaction");
+      });
+  }
+}
+
+/* Try autoplay on load */
+window.addEventListener('DOMContentLoaded', () => {
+  startMusic();
+});
+
+/* Fallback: start on first user interaction */
+document.addEventListener('click', () => {
+  startMusic();
+}, { once: true });
+
+/* =========================
+   PHOTO FLOAT SYSTEM (your original)
+========================= */
+(function() {
+  const photos = document.querySelectorAll('.photo-collage img');
+  if (!photos || photos.length === 0) return;
+
+  function triggerFloat() {
+    const idx = Math.floor(Math.random() * photos.length);
+    const el = photos[idx];
+    if (!el) return;
+
+    el.classList.add('float');
+
+    const animDuration = 3600 + Math.floor(Math.random() * 2400);
+    setTimeout(() => el.classList.remove('float'), animDuration);
+  }
+
+  function schedule() {
+    const delay = 2500 + Math.floor(Math.random() * 6000);
+
+    setTimeout(() => {
+      if (Math.random() < 0.75) triggerFloat();
+      schedule();
+    }, delay);
+  }
+
+  setTimeout(schedule, 1200);
+})();
+</script>
 </body>
 </html>
