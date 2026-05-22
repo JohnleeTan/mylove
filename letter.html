@@ -59,23 +59,61 @@
   <div id="backgroundMusic">
     <audio id="music" src="sound/cute_bg.mp3" autoplay loop></audio>
   </div>
-  <script>
-    const music = document.getElementById('music');
-    const envelope = document.getElementById('envelope');
-    const letter = document.getElementById('letter');
-    window.addEventListener('DOMContentLoaded', () => {
-      if (music) {
-        music.volume = 0.35;
-        music.play().catch(() => {});
-      }
-      // animate envelope opening shortly after load
-      if (envelope) {
-        setTimeout(() => {
-          envelope.classList.add('open');
-        }, 700);
-      }
-    });
-  </script>
+<script>
+const music = document.getElementById('music');
+const envelope = document.getElementById('envelope');
+
+let musicStarted = false;
+
+/* =========================
+   MUSIC SYSTEM (FIXED)
+========================= */
+function startMusic() {
+  if (!music || musicStarted) return;
+
+  music.volume = 0.35;
+
+  const playPromise = music.play();
+
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        musicStarted = true;
+      })
+      .catch(() => {
+        console.log("Autoplay blocked — waiting for user interaction");
+      });
+  }
+}
+
+/* Try autoplay on page load */
+window.addEventListener('DOMContentLoaded', () => {
+  startMusic();
+
+  // envelope animation
+  if (envelope) {
+    setTimeout(() => {
+      envelope.classList.add('open');
+    }, 700);
+  }
+});
+
+/* Fallback: unlock music on first interaction */
+document.addEventListener('click', () => {
+  startMusic();
+}, { once: true });
+
+document.addEventListener('touchstart', () => {
+  startMusic();
+}, { once: true });
+
+/* Optional: next button also ensures music plays */
+document.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    startMusic();
+  });
+});
+</script>
   <style>
     .envelope-container {
       display: flex;
